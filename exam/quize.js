@@ -138,3 +138,10 @@ function nextQuestion() {
         loadQuestion();
     }
 }
+
+function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion();
+    }
+}
