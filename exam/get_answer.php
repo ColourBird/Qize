@@ -1,7 +1,14 @@
 <?php
-include 'db.php';
+header('Content-Type: application/json');
+// include 'db.php';
 
-$stmt = $pdo->query("SELECT * FROM answer WHERE no = 1 ORDER BY exam_id ASC");
-$answers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-echo json_encode($answers);
+try {
+    $db = new PDO("mysql:dbname=mydb2;host=127.0.0.1;charset=utf8", "root", "");
+    $query = "SELECT * FROM exam";
+    $stmt = $db->query($query);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($results);
+} catch (PDOException $e) {
+    echo json_encode(["error" => "DB接続エラー: " . $e->getMessage()]);
+}
 ?>
