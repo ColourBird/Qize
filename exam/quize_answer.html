@@ -12,12 +12,55 @@
     </header>
     <main>
         <div class="container">
-            <!-- クイズの内容をここに追加 -->
-             
-            <a href="../index.html" class="btn">ホームに戻る</a>
+            <!-- クイズの答え解説をここに追加 -->
+            <div id="answer-container"></div>
+            <a href="index.html" class="btn">ホームに戻る</a>
         </div>
         
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAnswers();
+        });
+
+        function fetchAnswers() {
+            fetch('get_answers.php')
+                .then(response => response.json())
+                .then(data => {
+                    const answerContainer = document.getElementById('answer-container');
+                    data.forEach(answer => {
+                        const answerDiv = document.createElement('div');
+                        answerDiv.classList.add('answer');
+
+                        const questionTitle = document.createElement('h2');
+                        questionTitle.textContent = answer.title;
+                        answerDiv.appendChild(questionTitle);
+
+                        for (let i = 1; i <= 4; i++) {
+                            const option = document.createElement('p');
+                            option.textContent = answer[`answer${i}`];
+                            if (i == answer.correct) {
+                                option.style.fontWeight = 'bold';
+                                option.style.color = 'green';
+                            }
+                            if (i == answer.userAnswer) {
+                                if (i != answer.correct) {
+                                    option.style.fontWeight = 'bold';
+                                    option.style.color = 'red';
+                                }
+                            }
+                            answerDiv.appendChild(option);
+                        }
+
+                        const explanation = document.createElement('p');
+                        explanation.textContent = `解説: ${answer.description}`;
+                        answerDiv.appendChild(explanation);
+
+                        answerContainer.appendChild(answerDiv);
+                    });
+                });
+        }
+    </script>
     
 </body>
 </html>
