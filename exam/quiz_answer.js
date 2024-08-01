@@ -1,33 +1,41 @@
 let currentQuestionIndex = 0;
-let answers = {};
+let questions = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchAnswers();
+    fetchQuestions();
 });
 
-function fetchAnswers() {
-    fetch('get_answers.php')
+function fetchQuestions() {
+    fetch('get_questions.php')
         .then(response => response.json())
         .then(data => {
-            answers = data;
+            questions = data;
             loadAnswer();
         })
-        .catch(error => console.error('Error fetching answers:', error));
+        .catch(error => {
+            console.error('Error fetching questions:', error);
+        });
 }
 
 function loadAnswer() {
     const question = questions[currentQuestionIndex];
-    const answer = answers[currentQuestionIndex];
-    
     document.getElementById('answer-container').innerHTML = `
         <h2>${question.title}</h2>
-        <p>あなたの解答: ${question[`answer${answer.answer}`]}</p>
-        <p>正解: ${question[`answer${question.correct}`]}</p>
         <p>解説: ${question.description}</p>
+        <p>解答1: ${question.answer1}</p>
+        <p>解答2: ${question.answer2}</p>
+        <p>解答3: ${question.answer3}</p>
+        <p>解答4: ${question.answer4}</p>
+        <p>正解: ${question[`answer${question.correct}`]}</p>
     `;
-    
-    document.getElementById('prev-button').disabled = currentQuestionIndex === 0;
-    document.getElementById('next-button').disabled = currentQuestionIndex === questions.length - 1;
+    updateNavigationButtons();
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        loadAnswer();
+    }
 }
 
 function prevQuestion() {
@@ -37,9 +45,7 @@ function prevQuestion() {
     }
 }
 
-function nextQuestion() {
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        loadAnswer();
-    }
+function updateNavigationButtons() {
+    document.getElementById('prev-button').disabled = currentQuestionIndex === 0;
+    document.getElementById('next-button').disabled = currentQuestionIndex === questions.length - 1;
 }
