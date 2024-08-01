@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>四択クイズ - 答え合わせ</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="quiz_answer.js" defer></script>
+    <link rel="stylesheet" href="../style.css">
+    <script src="../quiz_answer.js" defer></script>
 </head>
 <body>
     <header>
@@ -14,9 +14,9 @@
     <main>
         <div class="container">
             <div id="answer-container"></div>
-            <button onclick="prevAnswer()">前へ</button>
-            <button onclick="nextAnswer()">次へ</button>
-            <a href="index.html" class="btn">ホームに戻る</a>
+            <button id="prev-button" onclick="prevQuestion()">前へ</button>
+            <button id="next-button" onclick="nextQuestion()">次へ</button>
+            <a href="../index.html" class="btn">ホームに戻る</a>
         </div>
     </main>
 </body>

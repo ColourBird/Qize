@@ -2,16 +2,13 @@
 header('Content-Type: application/json');
 
 try {
-    $pdo = new PDO("mysql:dbname=exam;host=localhost;charset=utf8", "root", "");
+    $pdo = new PDO("mysql:dbname=exam;host=127.0.0.1;charset=utf8", "root", "");
 
-    $query = "SELECT exam.*, answer.answer AS userAnswer 
-              FROM exam 
-              LEFT JOIN answer 
-              ON exam.id = answer.exam_id 
-              WHERE answer.no = 1
-              ORDER BY exam.id ASC";
-    $stmt = $pdo->query($query);
+    $stmt = $pdo->query("SELECT * FROM answer WHERE no = 1 ORDER BY exam_id ASC");
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode($results);
-} catch
+} catch (PDOException $e) {
+    echo json_encode(["error" => "DB接続エラー: " . $e->getMessage()]);
+}
+?>

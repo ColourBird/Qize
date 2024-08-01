@@ -1,20 +1,18 @@
 <?php
-header('Content-Type: application/x-www-form-urlencoded');
+header('Content-Type: application/json');
 
 try {
-    $pdo = new PDO("mysql:dbname=exam;host=localhost;charset=utf8", "root", "");
+    $pdo = new PDO("mysql:dbname=exam;host=127.0.0.1;charset=utf8", "root", "");
 
     $no = $_POST['no'];
     $exam_id = $_POST['exam_id'];
     $answer = $_POST['answer'];
 
-    $query = "INSERT INTO answer (no, exam_id, answer) VALUES (?, ?, ?) 
-              ON DUPLICATE KEY UPDATE answer=?";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute([$no, $exam_id, $answer, $answer]);
+    $stmt = $pdo->prepare("INSERT INTO answer (no, exam_id, answer) VALUES (?, ?, ?)");
+    $stmt->execute([$no, $exam_id, $answer]);
 
-    echo "回答が保存されました";
+    echo json_encode(["success" => true]);
 } catch (PDOException $e) {
-    echo "DB接続エラー: " . $e->getMessage();
+    echo json_encode(["error" => "DB接続エラー: " . $e->getMessage()]);
 }
 ?>

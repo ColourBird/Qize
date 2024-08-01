@@ -1,11 +1,8 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 header('Content-Type: application/json');
 
 try {
-    $pdo = new PDO("mysql:dbname=exam;host=localhost;charset=utf8", "root", "");
+    $pdo = new PDO("mysql:dbname=exam;host=127.0.0.1;charset=utf8", "root", "");
 
     $query = "SELECT * FROM exam ORDER BY id ASC";
     $stmt = $pdo->query($query);

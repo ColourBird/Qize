@@ -11,7 +11,8 @@ function fetchQuestions() {
         .then(data => {
             window.questions = data;
             loadQuestion();
-        });
+        })
+        .catch(error => console.error('Error fetching questions:', error));
 }
 
 function loadQuestion() {
@@ -51,8 +52,11 @@ function saveAnswer(questionId, answer) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `no=1&exam_id=${questionId}&answer=${answer}`
     }).then(() => {
-        document.getElementById('check-answers').disabled = Object.keys(answers).length < questions.length;
-    });
+        const checkAnswersButton = document.getElementById('check-answers');
+        if (checkAnswersButton) {
+            checkAnswersButton.disabled = Object.keys(answers).length < questions.length;
+        }
+    }).catch(error => console.error('Error saving answer:', error));
 }
 
 function nextQuestion() {
@@ -68,25 +72,4 @@ function nextQuestion() {
         return;
     }
     loadQuestion();
-}
-
-function fetchQuestions() {
-    fetch('../get_questions.php')
-        .then(response => response.text())
-        .then(data => {
-            try {
-                const jsonData = JSON.parse(data);
-                if (!jsonData.error) {
-                    window.questions = jsonData;
-                    loadQuestion();
-                } else {
-                    console.error(jsonData.error);
-                }
-            } catch (error) {
-                console.error('Invalid JSON:', data);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
 }
