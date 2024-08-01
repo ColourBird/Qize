@@ -69,3 +69,24 @@ function nextQuestion() {
     }
     loadQuestion();
 }
+
+function fetchQuestions() {
+    fetch('../get_questions.php')
+        .then(response => response.text())
+        .then(data => {
+            try {
+                const jsonData = JSON.parse(data);
+                if (!jsonData.error) {
+                    window.questions = jsonData;
+                    loadQuestion();
+                } else {
+                    console.error(jsonData.error);
+                }
+            } catch (error) {
+                console.error('Invalid JSON:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
