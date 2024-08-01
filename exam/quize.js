@@ -5,10 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchQuestions();
 });
 
-function goToPage(page) {
-    window.location.href = page;
-}
-
 function fetchQuestions() {
     fetch('get_questions.php')
         .then(response => response.json())
@@ -67,7 +63,9 @@ function nextQuestion() {
 
     currentQuestionIndex++;
     if (currentQuestionIndex >= questions.length) {
-        currentQuestionIndex = questions.length - 1; // 最後の問題
+        alert('全ての問題に解答しました。答え合わせページへ移動します。');
+        window.location.href = 'quiz_answer.html';
+        return;
     }
     loadQuestion();
 }
